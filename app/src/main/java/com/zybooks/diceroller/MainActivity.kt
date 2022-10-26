@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.zybooks.diceroller.databinding.ActivityMainBinding
 
-const val MAX_DICE = 3
+const val MAX_DICE = 5
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         // Create list of ImageViews
         diceImageViewList = mutableListOf(
             //findViewById(R.id.dice1), findViewById(R.id.dice2), findViewById(R.id.dice3))
-        binding.dice1, binding.dice2, binding.dice3)
+        binding.dice1, binding.dice2, binding.dice3, binding.dice4, binding.dice5)
         showDice()
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -69,6 +69,16 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.action_three -> {
                 changeDiceVisibility(3)
+                showDice()
+                true
+            }
+            R.id.action_four -> {
+                changeDiceVisibility(4)
+                showDice()
+                true
+            }
+            R.id.action_five -> {
+                changeDiceVisibility(5)
                 showDice()
                 true
             }
