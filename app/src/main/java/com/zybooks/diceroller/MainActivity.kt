@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.zybooks.diceroller.databinding.ActivityMainBinding
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity() ,
     private var timer: CountDownTimer? = null
     private lateinit var binding: ActivityMainBinding
     private var timerLength = 2000L
+    private var total = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,7 +110,6 @@ class MainActivity : AppCompatActivity() ,
         timer?.cancel()
 
         // Start a timer that periodically changes each visible dice
-
         timer = object : CountDownTimer(timerLength, 100) {
             override fun onTick(millisUntilFinished: Long) {
                 for (i in 0 until numVisibleDice) {
@@ -116,9 +117,13 @@ class MainActivity : AppCompatActivity() ,
                 }
                 showDice()
             }
-
             override fun onFinish() {
+                for(i in 0 until numVisibleDice){
+                    total += diceList[i].number
+                }
                 optionsMenu.findItem(R.id.action_stop).isVisible = false
+                Toast.makeText(applicationContext, "Total is: $total", Toast.LENGTH_LONG).show()
+                total = 0
             }
         }.start()
     }
