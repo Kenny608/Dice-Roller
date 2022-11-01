@@ -9,6 +9,9 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.zybooks.diceroller.databinding.ActivityMainBinding
+import android.view.GestureDetector
+import android.view.MotionEvent
+import androidx.core.view.GestureDetectorCompat
 
 const val MAX_DICE = 5
 
@@ -24,6 +27,7 @@ class MainActivity : AppCompatActivity() ,
     private var timer: CountDownTimer? = null
     private lateinit var binding: ActivityMainBinding
     private var timerLength = 2000L
+    private lateinit var gestureDetector: GestureDetectorCompat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +45,30 @@ class MainActivity : AppCompatActivity() ,
             //findViewById(R.id.dice1), findViewById(R.id.dice2), findViewById(R.id.dice3))
         binding.dice1, binding.dice2, binding.dice3, binding.dice4, binding.dice5)
         showDice()
+
+        gestureDetector = GestureDetectorCompat(this,
+            object : GestureDetector.SimpleOnGestureListener() {
+                override fun onDown(e: MotionEvent?): Boolean {
+                    return true
+                }
+
+                override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float,
+                                     velocityY: Float): Boolean {
+                    if (velocityY > 2000) {
+                        rollDice()
+                    }
+                    return true
+                }
+            }
+        )
     }
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        if(event != null){
+            gestureDetector.onTouchEvent(event)
+        }
+        return super.onTouchEvent(event)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.appbar_menu, menu)
         optionsMenu = menu!!
